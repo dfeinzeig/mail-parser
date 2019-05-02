@@ -44,8 +44,12 @@ from .const import (
     JUNK_PATTERN,
     OTHERS_PARTS,
     RECEIVED_COMPILED_LIST)
+if six.PY3:
+    from .const_py3 import (
+        EMAIL_ENVELOPE_PATTERN_BYTES,
+    )
 
-from .exceptions import MailParserOSError, MailParserReceivedParsingError
+from .exceptions import MailParserOSError, MailParserReceivedParsingError, MailParserEnvironmentError
 
 
 log = logging.getLogger(__name__)
@@ -260,7 +264,12 @@ def parse_received(received):
             # otherwise we have one matching clause!
             log.debug("Found one match for %s in %s" % (pattern.pattern, received))
             match = matches[0].groupdict()
-            values_by_clause[match.keys()[0]] = match.values()[0]
+            if six.PY2:
+                values_by_clause[match.keys()[0]] = match.values()[0]
+            elif six.PY3:
+                key = list(match.keys())[0]
+                value = list(match.values())[0]
+                values_by_clause[key] = value
     if len(values_by_clause) == 0:
         # we weren't able to match anything...
         msg = "Unable to match any clauses in %s" % (received)
@@ -485,7 +494,14 @@ def print_attachments(attachments, flag_hash):  # pragma: no cover
 
 def remove_email_envelope(message):
     """ Remove the email envelope from message. Return boolean if it was present and new message. """
-    envelope_present = True if EMAIL_ENVELOPE_PATTERN.search(message) else False
-    new_message = EMAIL_ENVELOPE_PATTERN.sub('', message)
-
+    if isinstance(message, six.string_types):
+        envelope_present = True if EMAIL_ENVELOPE_PATTERN.search(message) else False
+        new_message = EMAIL_ENVELOPE_PATTERN.sub('', message)
+    else:
+        if six.PY3:
+            envelope_present = True if EMAIL_ENVELOPE_PATTERN_BYTES.search(message) else False
+            new_message = EMAIL_ENVELOPE_PATTERN_BYTES.sub('', message)
+        else:
+            raise MailParserEnvironmentError(
+                "Parsing from bytes is valid only for Python 3.x version")
     return envelope_present, new_message

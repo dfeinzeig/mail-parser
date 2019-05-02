@@ -19,13 +19,15 @@ limitations under the License.
 
 import re
 
-
 REGXIP = re.compile(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
 
 # need to strip out the envelope apparently so that python email library can parse it...
-# python [at least 2.7] email library silently skips emails with an envelope
+# python 2 and 3 email libraries silently skips emails with an envelope
 # https://github.com/python/cpython/blob/2.7/Lib/email/feedparser.py#L226
+#  and
+# https://github.com/python/cpython/blob/3.7/Lib/email/feedparser.py#L228
 EMAIL_ENVELOPE_PATTERN = re.compile(r'(?:MAIL FROM:|RCPT TO:).*\n', re.IGNORECASE)
+# see const_py3.py for bytes compatible regex; can't include here or python2 complains
 
 JUNK_PATTERN = r'[ \(\)\[\]\t\n]+'
 
