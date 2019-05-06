@@ -500,7 +500,7 @@ def remove_email_envelope(message):
     else:
         if six.PY3:
             envelope_present = True if EMAIL_ENVELOPE_PATTERN_BYTES.search(message) else False
-            new_message = EMAIL_ENVELOPE_PATTERN_BYTES.sub('', message)
+            new_message = EMAIL_ENVELOPE_PATTERN_BYTES.sub(b'', message)
         else:
             raise MailParserEnvironmentError(
                 "Parsing from bytes is valid only for Python 3.x version")
