@@ -44,11 +44,11 @@ RECEIVED_PATTERNS = [
     # need to make sure envelope-from comes before from to prevent mismatches
     # envelope-from and -sender seem to optionally have space and/or ( before them
     # other clauses must have whitespace before
-    r'(?:by\s+(?P<by>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+with(?! cipher)|\s+id|\s+for|\s+via|;))',
-    r'(?:with(?! cipher)\s+(?P<with>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+id|\s+for|\s+via|;))',
-    r'(?:id\s+(?P<id>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+with(?! cipher)|\s+for|\s+via|;))',
-    r'(?:for\s+(?P<for>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+with(?! cipher)|\s+id|\s+via|;))',
-    r'(?:via\s+(?P<via>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+id|\s+for|\s+with(?! cipher)|;))',
+    r'(?:by\s+(?P<by>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+with(?! cipher)|\s+id|\s+for|\s+via|;$))',
+    r'(?:with(?! cipher)\s+(?P<with>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+id|\s+for|\s+via|;$))',
+    r'(?:id\s+(?P<id>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+with(?! cipher)|\s+for|\s+via|;$))',
+    r'(?:for\s+(?P<for>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+with(?! cipher)|\s+id|\s+via|;$))',
+    r'(?:via\s+(?P<via>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+id|\s+for|\s+with(?! cipher)|;$))',
 
     # assumes emails are always inside <>
     r'(?:envelope-from\s+<(?P<envelope_from>.+?)>)',
