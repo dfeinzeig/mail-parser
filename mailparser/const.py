@@ -55,7 +55,7 @@ RECEIVED_PATTERNS = [
     r'(?:envelope-sender\s+<(?P<envelope_sender>.+?)>)',
 
     # datetime comes after ; at the end
-    r';\s*(?P<date>.*)'
+    r';\s*(?P<date>.*)$'
 ]
 
 RECEIVED_COMPILED_LIST = [re.compile(i, re.I|re.DOTALL) for i in RECEIVED_PATTERNS]
