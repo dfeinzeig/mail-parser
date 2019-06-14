@@ -39,23 +39,24 @@ RECEIVED_PATTERNS = [
     # TODO: ideally would do negative matching for with in parens
 
     # need the beginning or space to differentiate from envelope-from
-    r'(?:(?:^|\s)from\s+(?P<from>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+by|\s+with(?! cipher)|\s+id|\s+for|\s+via|;))',
+    r'(?:(?:^|\s)from\s+(?P<from>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+by|\s+with(?! cipher)|\s+id|\s+for|\s+via|;\Z))',
 
     # need to make sure envelope-from comes before from to prevent mismatches
     # envelope-from and -sender seem to optionally have space and/or ( before them
-    # other clauses must have whitespace before
-    r'(?:by\s+(?P<by>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+with(?! cipher)|\s+id|\s+for|\s+via|;$))',
-    r'(?:with(?! cipher)\s+(?P<with>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+id|\s+for|\s+via|;$))',
-    r'(?:id\s+(?P<id>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+with(?! cipher)|\s+for|\s+via|;$))',
-    r'(?:for\s+(?P<for>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+with(?! cipher)|\s+id|\s+via|;$))',
-    r'(?:via\s+(?P<via>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+id|\s+for|\s+with(?! cipher)|;$))',
+    # other clauses must have whitespace before.
+    # need \Z to match end of string when using multiline (we want final ;)
+    r'(?:by\s+(?P<by>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+with(?! cipher)|\s+id|\s+for|\s+via|;\Z))',
+    r'(?:with(?! cipher)\s+(?P<with>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+id|\s+for|\s+via|;\Z))',
+    r'(?:id\s+(?P<id>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+with(?! cipher)|\s+for|\s+via|;\Z))',
+    r'(?:for\s+(?P<for>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+with(?! cipher)|\s+id|\s+via|;\Z))',
+    r'(?:via\s+(?P<via>.+?)(?:\s*[(]?envelope-from|\s*[(]?envelope-sender|\s+from|\s+by|\s+id|\s+for|\s+with(?! cipher)|;\Z))',
 
     # assumes emails are always inside <>
     r'(?:envelope-from\s+<(?P<envelope_from>.+?)>)',
     r'(?:envelope-sender\s+<(?P<envelope_sender>.+?)>)',
 
     # datetime comes after ; at the end
-    r';\s*(?P<date>.*)$'
+    r';\s*(?P<date>.*)\Z'
 ]
 
 RECEIVED_COMPILED_LIST = [re.compile(i, re.I|re.DOTALL) for i in RECEIVED_PATTERNS]
